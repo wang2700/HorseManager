@@ -22,7 +22,15 @@
         <activity
             android:name=".Activities.AddHorse"
             android:label="@string/title_activity_add_horse"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
+
+    <uses-feature android:name="android.hardware.camera2"
+        android:required="true"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18"/>
+
+
 
 </manifest>

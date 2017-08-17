@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,47 +8,78 @@
     tools:context="jw.horsemanager.Activities.AddHorse"
     tools:showIn="@layout/activity_add_horse">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+
+    <EditText
+        android:id="@+id/name_edit_text_add_horse"
+        android:layout_width="411dp"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary"
+        android:ems="10"
+        android:hint="Enter the name of you horse"
+        android:inputType="textPersonName"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:textSize="18sp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/horse_pic_image_view_add_horse"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="15dp"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        app:layout_constraintTop_toBottomOf="@+id/name_edit_text_add_horse"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <EditText
+        android:id="@+id/breed_edit_text_add_horse"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:orientation="vertical">
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:hint="Breed"
+        android:inputType="textPersonName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horse_pic_image_view_add_horse"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
 
-        <EditText
-            android:id="@+id/name_editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/name" />
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:text="Birthday:"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/breed_edit_text_add_horse"
+        android:layout_marginLeft="16dp" />
 
-        <EditText
-            android:id="@+id/breed_editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/name_editText"
-            android:hint="@string/breed" />
+    <Button
+        android:id="@+id/birthday_btn_add_horse"
+        style="@android:style/Widget.Material.Light.Button.Borderless"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:text="Button"
+        android:textSize="18sp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toRightOf="@+id/textView3"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/breed_edit_text_add_horse"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/breed_editText"
-            android:padding="8dp"
-            android:text="@string/birthday"
-            android:textSize="18sp"
-            android:id="@+id/birthday_textView"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/birthday_textView"
-            android:layout_below="@id/breed_editText"
-            android:textSize="18sp"
-            android:padding="8dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/birthday_textView"
-            android:text="@string/large_text"/>
-
-    </RelativeLayout>
-</ScrollView>
+</android.support.constraint.ConstraintLayout>
