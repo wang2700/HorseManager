@@ -148,6 +148,7 @@ public class AddHorse extends AppCompatActivity {
 //     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //TODO: maybe need to add full image
 //        if (takePictureIntent.resolveActivity(getPackageManager()) != null){
 //            File photoFile = null;
 //            try {
