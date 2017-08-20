@@ -2,11 +2,11 @@ package jw.horsemanager.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTabHost;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,14 +17,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+
 import jw.horsemanager.Fragments.HomeFragment;
 import jw.horsemanager.Fragments.HorsesFragment;
+import jw.horsemanager.Objects.Horse;
 import jw.horsemanager.R;
 
 public class HomeScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = "HomeScreen";
+
     private FragmentManager fragmentManager;
+    public static ArrayList<Horse> horseArrayList;
+    public static String horseListFilePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +51,7 @@ public class HomeScreen extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent addHorses = new Intent(HomeScreen.this, AddHorse.class);
+                addHorses.putExtra("mode", AddHorse.ADD);
                 startActivity(addHorses);
             }
         });
@@ -52,6 +64,34 @@ public class HomeScreen extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //load horse lists
+        horseListFilePath = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString() + "/HorseList";
+        Log.i(TAG, "checking horse list file from: " + horseListFilePath);
+        File horseListFile = new File(horseListFilePath);
+        if (horseListFile.exists()){
+            try {
+                Log.i(TAG, "horse list file exists!");
+                FileInputStream horseListFis = new FileInputStream(horseListFile);
+                ObjectInputStream horseListOis = new ObjectInputStream(horseListFis);
+                horseArrayList = (ArrayList<Horse>) horseListOis.readObject();
+                horseListFis.close();
+                horseListOis.close();
+            } catch (ClassNotFoundException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.i(TAG, "horse list file does not exists!");
+            try {
+                horseListFile.createNewFile();
+                horseArrayList = new ArrayList<>();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
     }
 
     @Override

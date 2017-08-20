@@ -1,5 +1,8 @@
 package jw.horsemanager.Objects;
 
+import android.graphics.Bitmap;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -7,20 +10,20 @@ import java.util.Date;
  * This horse object will store all the info for each horse in the spp
  */
 
-public class Horse {
+public class Horse implements Serializable{
     private String name;
-    private String picturePath;
+    private SerializedBitmap picture;
     private Date birthday;
     private String Breed;
     //private FeedingSchedule
-    private ArrayList<String> docPath;
+    //private ArrayList<String> docPath;
 
-    public Horse(String name, String picturePath, Date birthday, String breed, ArrayList<String> docPath) {
+    public Horse(String name, SerializedBitmap picture, Date birthday, String breed, ArrayList<String> docPath) {
         this.name = name;
-        this.picturePath = picturePath;
+        this.picture = picture;
         this.birthday = birthday;
         Breed = breed;
-        this.docPath = docPath;
+        //this.docPath = docPath;
     }
 
     public String getName() {
@@ -31,12 +34,12 @@ public class Horse {
         this.name = name;
     }
 
-    public String getPicturePath() {
-        return picturePath;
+    public SerializedBitmap getPicture() {
+        return picture;
     }
 
-    public void setPicturePath(String picturePath) {
-        this.picturePath = picturePath;
+    public void setPicture(SerializedBitmap picture) {
+        this.picture = picture;
     }
 
     public Date getBirthday() {
@@ -55,11 +58,11 @@ public class Horse {
         Breed = breed;
     }
 
-    public ArrayList<String> getDocPath() {
-        return docPath;
-    }
+//    public ArrayList<String> getDocPath() {
+//        return docPath;
+//    }
 
-    public void setDocPath(ArrayList<String> docPath) {
-        this.docPath = docPath;
-    }
+//    public void setDocPath(ArrayList<String> docPath) {
+//        this.docPath = docPath;
+//    }
 }
