@@ -1,54 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="jw.horsemanager.Activities.AddHorse"
     tools:showIn="@layout/activity_add_horse">
 
-    <RelativeLayout
+
+    <EditText
+        android:id="@+id/name_edit_text_add_horse"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/colorPrimary"
+        android:ems="10"
+        android:hint="Enter the name of you horse"
+        android:inputType="textPersonName"
+        android:maxLines="1"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        android:textSize="24sp" />
+
+    <ImageView
+        android:id="@+id/horse_pic_image_view_add_horse"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:contentDescription="Add a Picture of your horse"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/darker_gray" />
+
+    <EditText
+        android:id="@+id/breed_edit_text_add_horse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:orientation="vertical">
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:hint="Breed"
+        android:maxLines="1" />
 
-        <EditText
-            android:id="@+id/name_editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/name" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/darker_gray" />
 
-        <EditText
-            android:id="@+id/breed_editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/name_editText"
-            android:hint="@string/breed" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+
+        android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/breed_editText"
-            android:padding="8dp"
-            android:text="@string/birthday"
-            android:textSize="18sp"
-            android:id="@+id/birthday_textView"/>
+            android:text="Birthday:"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/birthday_textView"
-            android:layout_below="@id/breed_editText"
-            android:textSize="18sp"
-            android:padding="8dp"/>
+        <Button
+            android:id="@+id/birthday_btn_add_horse"
+            style="@android:style/Widget.Material.Light.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="5"
+            android:text="Button"
+            android:textSize="18sp" />
+    </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/birthday_textView"
-            android:text="@string/large_text"/>
 
-    </RelativeLayout>
-</ScrollView>
+</LinearLayout>
