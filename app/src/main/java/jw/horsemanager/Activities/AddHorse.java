@@ -33,9 +33,8 @@ import jw.horsemanager.R;
 
 public class AddHorse extends AppCompatActivity {
 
-    static final int EDIT = 1;
-    static final int ADD = 2;
-    static final int datePickerId = 253;
+    public static final int EDIT = 1;
+    public static final int ADD = 2;
 
     private EditText nameEditText, breedEditText;
     private Button birthdayBtn;

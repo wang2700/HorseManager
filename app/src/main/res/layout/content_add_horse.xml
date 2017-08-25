@@ -32,7 +32,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
         android:contentDescription="Add a Picture of your horse"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
+        android:src="@android:drawable/ic_menu_camera" />
 
     <View
         android:layout_width="match_parent"
