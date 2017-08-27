@@ -6,4 +6,9 @@ package jw.horsemanager.Misc;
  */
 
 public class Constants {
+
+    public static final int EDIT = 1;
+    public static final int ADD = 2;
+    public static final int REQUEST_FEED_SCHEDULE = 3;
+    public static final int REQUEST_IMAGE_CAPTURE = 4;
 }

@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 
 import jw.horsemanager.Fragments.HomeFragment;
 import jw.horsemanager.Fragments.HorsesFragment;
+import jw.horsemanager.Misc.SystemSetting;
 import jw.horsemanager.Objects.Horse;
 import jw.horsemanager.R;
 
@@ -80,7 +82,10 @@ public class HomeScreen extends AppCompatActivity
             }
         }
 
-
+        //check system setting
+        SystemSetting.setIs24HourFormat(DateFormat.is24HourFormat(getApplicationContext()));
+        SystemSetting.setDateFormat(DateFormat.getDateFormat(getApplicationContext()));
+        SystemSetting.setTimeFormat(DateFormat.getTimeFormat(getApplicationContext()));
 
     }
 
