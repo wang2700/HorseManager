@@ -40,7 +40,10 @@
         <activity
             android:name=".Activities.FeedingScheduleList"
             android:label="@string/title_activity_feeding_schedule_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.ChooseRepeat"
+            android:theme="@android:style/Theme.Holo.Dialog" />
     </application>
 
 </manifest>

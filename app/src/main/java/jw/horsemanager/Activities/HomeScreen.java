@@ -36,8 +36,16 @@ public class HomeScreen extends AppCompatActivity
     private static final String TAG = "HomeScreen";
 
     private FragmentManager fragmentManager;
-    public static ArrayList<Horse> horseArrayList;
-    public static String horseListFilePath;
+    private static ArrayList<Horse> horseArrayList;
+    private static String horseListFilePath;
+
+    public static ArrayList<Horse> getHorseArrayList() {
+        return horseArrayList;
+    }
+
+    public static String getHorseListFilePath() {
+        return horseListFilePath;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -41,10 +41,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:onClick="chooseTime"
             android:text="@string/time"
             android:textAlignment="textStart"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
     </LinearLayout>
 
     <View style="@style/grey_separate_line" />
@@ -63,9 +62,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:text="@string/does_not_repeat"
+            android:text="@string/repeat_everyday"
             android:textAlignment="textStart"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -85,7 +84,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:hint="@string/amount_of_feed"
-            android:inputType="numberDecimal"/>
+            android:inputType="numberDecimal" />
 
         <Spinner
             android:id="@+id/unit_spinner"

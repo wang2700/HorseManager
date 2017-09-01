@@ -25,5 +25,22 @@
     <string name="new_text">New</string>
     <string name="edit">Edit</string>
     <string name="amount_of_feed">Amount of Feed</string>
-    <string name="does_not_repeat">Does not Repeat</string>
+    <string name="repeat_everyday">Repeat Everyday</string>
+    <string name="choose_repeat">Choose Feeding Repetition</string>
+    <string name="mon_repeat">Mon,</string>
+    <string name="tue_repeat">Tue,</string>
+    <string name="wed_repeat">Wed,</string>
+    <string name="thur_repeat">Thur,</string>
+    <string name="fri_repeat">Fri,</string>
+    <string name="sat_repeat">Sat,</string>
+    <string name="sun_repeat">Sun,</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="monday">Monday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="not_repeat">Does not repeat</string>
+    <string name="repeat">Repeat</string>
 </resources>

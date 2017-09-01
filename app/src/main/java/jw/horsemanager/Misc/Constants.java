@@ -11,4 +11,5 @@ public class Constants {
     public static final int ADD = 2;
     public static final int REQUEST_FEED_SCHEDULE = 3;
     public static final int REQUEST_IMAGE_CAPTURE = 4;
+    public static final int REQUEST_CHOOSE_REPEAT = 5;
 }

@@ -138,14 +138,14 @@ public class AddEditHorse extends AppCompatActivity {
                 horsePic.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 horsePicSerialized.bitmapImage = stream.toByteArray();
                 Horse newHorse = new Horse(name, horsePicSerialized, birthday, breed, null);
-                HomeScreen.horseArrayList.add(newHorse);
+                HomeScreen.getHorseArrayList().add(newHorse);
                 try {
-                    FileOutputStream horseListFos = new FileOutputStream(HomeScreen.horseListFilePath);
+                    FileOutputStream horseListFos = new FileOutputStream(HomeScreen.getHorseListFilePath());
                     ObjectOutputStream horseListOos = new ObjectOutputStream(horseListFos);
                     final long initialPosition = horseListFos.getChannel().position();
                     horseListFos.getChannel().position(initialPosition);
                     horseListOos.reset();
-                    horseListOos.writeObject(HomeScreen.horseArrayList);
+                    horseListOos.writeObject(HomeScreen.getHorseArrayList());
                     horseListOos.flush();
                     horseListFos.close();
                     stream.close();

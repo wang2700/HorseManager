@@ -5,4 +5,15 @@
         <item>lb</item>
     </string-array>
 
+    <string-array name="repetition_choice">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+        <item>Does Not Repeat</item>
+    </string-array>
+
 </resources>
