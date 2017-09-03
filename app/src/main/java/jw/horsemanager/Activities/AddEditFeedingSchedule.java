@@ -2,6 +2,7 @@ package jw.horsemanager.Activities;
 
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
@@ -22,7 +24,7 @@ import jw.horsemanager.Misc.Constants;
 import jw.horsemanager.Misc.SystemSetting;
 import jw.horsemanager.R;
 
-public class AddEditFeedingSchedule extends AppCompatActivity implements ChooseRepeatDialogFragment.ChooseRepeatDialogListener {
+public class AddEditFeedingSchedule extends AppCompatActivity {
 
     private static final String TAG = "AddEditFeedingSchedule";
 
@@ -31,7 +33,8 @@ public class AddEditFeedingSchedule extends AppCompatActivity implements ChooseR
     private int feedingMinute;
     private Button feedingTimeBtn, repeatBtn;
     private EditText feedNameEditText, amountEditText;
-    private boolean[] feedRepeat = new boolean[8];
+    private boolean[] feedRepeat = new boolean[7];
+    private boolean isFirstRepeat = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,8 @@ public class AddEditFeedingSchedule extends AppCompatActivity implements ChooseR
         } else if (editMode == Constants.EDIT) {
             getSupportActionBar().setTitle(getString(R.string.edit) + " " + getString(R.string.feeding_schedule));
         }
+
+        Arrays.fill(feedRepeat, true);
 
         feedingTimeBtn = (Button) findViewById(R.id.feed_time_btn);
         repeatBtn = (Button) findViewById(R.id.repeat_btn);
@@ -108,7 +113,10 @@ public class AddEditFeedingSchedule extends AppCompatActivity implements ChooseR
         repeatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                repeatDialog.show(getFragmentManager(), "ChooseRepeatDialogFragment");
+                Intent chooseRepeatIntent = new Intent(AddEditFeedingSchedule.this, ChooseRepeat.class);
+                chooseRepeatIntent.putExtra("currentSelection", feedRepeat);
+                chooseRepeatIntent.putExtra("first", isFirstRepeat);
+                startActivityForResult(chooseRepeatIntent, Constants.REQUEST_CHOOSE_REPEAT);
             }
         });
 
@@ -137,53 +145,62 @@ public class AddEditFeedingSchedule extends AppCompatActivity implements ChooseR
     }
 
     @Override
-    public void onDialogPositiveClick(ChooseRepeatDialogFragment dialog) {
-        feedRepeat = Arrays.copyOf(dialog.getChoicesAfter(), dialog.getChoicesAfter().length);
-        Log.i(TAG, Arrays.toString(feedRepeat));
-        dialog.setChoicesBefore(dialog.getChoicesAfter());
-        String repeatText = "Repeat: ";
-        if (feedRepeat[0]) {
-            repeatText = repeatText + getString(R.string.mon_repeat) + " ";
-        }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.REQUEST_CHOOSE_REPEAT){
+            if (resultCode == RESULT_OK) {
+                isFirstRepeat = false;
+                feedRepeat = Arrays.copyOf((boolean[]) data.getExtras().get("selection"), 7);
+                Log.i(TAG, "feed repeat result received");
+                String repeatText = "Repeat: ";
+                if (feedRepeat[0]) {
+                    repeatText = repeatText + getString(R.string.mon_repeat) + " ";
+                }
 
-        if (feedRepeat[1]) {
-            repeatText = repeatText + getString(R.string.tue_repeat) + " ";
-        }
+                if (feedRepeat[1]) {
+                    repeatText = repeatText + getString(R.string.tue_repeat) + " ";
+                }
 
-        if (feedRepeat[2]) {
-            repeatText = repeatText + getString(R.string.wed_repeat) + " ";
-        }
+                if (feedRepeat[2]) {
+                    repeatText = repeatText + getString(R.string.wed_repeat) + " ";
+                }
 
-        if (feedRepeat[3]) {
-            repeatText = repeatText + getString(R.string.thur_repeat) + " ";
-        }
+                if (feedRepeat[3]) {
+                    repeatText = repeatText + getString(R.string.thur_repeat) + " ";
+                }
 
-        if (feedRepeat[4]) {
-            repeatText = repeatText + getString(R.string.fri_repeat) + " ";
-        }
+                if (feedRepeat[4]) {
+                    repeatText = repeatText + getString(R.string.fri_repeat) + " ";
+                }
 
-        if (feedRepeat[5]) {
-            repeatText = repeatText + getString(R.string.sat_repeat) + " ";
+                if (feedRepeat[5]) {
+                    repeatText = repeatText + getString(R.string.sat_repeat) + " ";
+                }
+                if (feedRepeat[6]) {
+                    repeatText = repeatText + getString(R.string.sun_repeat) + " ";
+                }
+                repeatText = repeatText.substring(0, repeatText.length() - 2);
+                if (isEveryday(feedRepeat)){
+                    repeatText = getString(R.string.repeat_everyday);
+                } else if (isNotRepeat(feedRepeat)){
+                    repeatText = getString(R.string.not_repeat);
+                }
+                repeatBtn.setText(repeatText);
+            }
         }
-        if (feedRepeat[6]) {
-            repeatText = repeatText + getString(R.string.sun_repeat) + " ";
-        }
-        repeatText = repeatText.substring(0, repeatText.length() - 2);
-        if (checkEveryday(feedRepeat)){
-            repeatText = getString(R.string.repeat_everyday);
-        }
-        repeatBtn.setText(repeatText);
     }
 
-
-    @Override
-    public void onDialogNegativeClick(ChooseRepeatDialogFragment dialog) {
-        dialog.setChoicesAfter(dialog.getChoicesBefore());
+    static boolean isEveryday(boolean[] choices){
+        for (boolean choice : choices) {
+            if (!choice)
+                return false;
+        }
+        return true;
     }
 
-    private boolean checkEveryday (boolean[] choices){
-        for (int i = 0; i < choices.length - 1; i++) {
-            if (!choices[i])
+    static boolean isNotRepeat (boolean[] choices){
+        for (boolean choice : choices) {
+            if (choice)
                 return false;
         }
         return true;

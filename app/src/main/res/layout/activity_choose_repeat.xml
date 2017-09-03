@@ -1,58 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="350dp"
     android:orientation="vertical"
     tools:context="jw.horsemanager.Activities.ChooseRepeat">
 
-    <RadioButton
-        android:id="@+id/repeat_radio_button"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <RadioGroup
+            android:id="@+id/repeat_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="24dp"
+            android:paddingStart="24dp">
+
+            <RadioButton
+                android:id="@+id/not_repeat_radio_button"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/not_repeat"
+                android:textSize="18sp" />
+
+            <RadioButton
+                android:id="@+id/repeat_radio_button"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/repeat"
+                android:textSize="18sp" />
+
+            <CheckBox
+                android:id="@+id/monday_check_box"
+                style="@style/checkbox_choose_repeat_dialog"
+                android:text="@string/monday" />
+
+            <CheckBox
+                android:id="@+id/tuesday_check_box"
+                style="@style/checkbox_choose_repeat_dialog"
+                android:text="@string/tuesday" />
+
+            <CheckBox
+                android:id="@+id/wednesday_check_box"
+                style="@style/checkbox_choose_repeat_dialog"
+                android:text="@string/wednesday" />
+
+            <CheckBox
+                android:id="@+id/thursday_check_box"
+                style="@style/checkbox_choose_repeat_dialog"
+                android:text="@string/thursday" />
+
+            <CheckBox
+                android:id="@+id/friday_check_box"
+                style="@style/checkbox_choose_repeat_dialog"
+                android:text="@string/friday" />
+
+            <CheckBox
+                android:id="@+id/saturday_check_box"
+                style="@style/checkbox_choose_repeat_dialog"
+                android:text="@string/saturday" />
+
+            <CheckBox
+                android:id="@+id/sunday_check_box"
+                style="@style/checkbox_choose_repeat_dialog"
+                android:text="@string/sunday" />
+
+
+        </RadioGroup>
+
+    </ScrollView>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/repeat"
-        android:textSize="18sp" />
+        android:layout_gravity="end"
+        android:orientation="horizontal">
 
-    <CheckBox
-        android:id="@+id/monday_check_box"
-        style="@style/checkbox_choose_repeat_dialog"
-        android:text="@string/monday" />
+        <Button
+            android:id="@+id/okay_btn_choose_repeat"
+            style="@android:style/Widget.Holo.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="8dp"
+            android:text="@string/okay"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp" />
 
-    <CheckBox
-        android:id="@+id/tuesday_check_box"
-        style="@style/checkbox_choose_repeat_dialog"
-        android:text="@string/tuesday" />
+        <Button
+            android:id="@+id/cancel_btn_choose_repeat"
+            style="@android:style/Widget.Holo.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toStartOf="@+id/okay_btn_choose_repeat"
+            android:text="@string/cancel"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp" />
+    </RelativeLayout>
 
-    <CheckBox
-        android:id="@+id/wednesday_check_box"
-        style="@style/checkbox_choose_repeat_dialog"
-        android:text="@string/wednesday" />
-
-    <CheckBox
-        android:id="@+id/thursday_check_box"
-        style="@style/checkbox_choose_repeat_dialog"
-        android:text="@string/thursday" />
-
-    <CheckBox
-        android:id="@+id/friday_check_box"
-        style="@style/checkbox_choose_repeat_dialog"
-        android:text="@string/friday" />
-
-    <CheckBox
-        android:id="@+id/saturday_check_box"
-        style="@style/checkbox_choose_repeat_dialog"
-        android:text="@string/saturday" />
-
-    <CheckBox
-        android:id="@+id/sunday_check_box"
-        style="@style/checkbox_choose_repeat_dialog"
-        android:text="@string/sunday" />
-
-    <RadioButton
-        android:id="@+id/not_repeat_radio_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/not_repeat"
-        android:textSize="18sp" />
-
-</RadioGroup>
+</LinearLayout>

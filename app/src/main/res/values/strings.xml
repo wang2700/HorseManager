@@ -43,4 +43,6 @@
     <string name="sunday">Sunday</string>
     <string name="not_repeat">Does not repeat</string>
     <string name="repeat">Repeat</string>
+    <string name="okay">Okay</string>
+    <string name="cancel">Cancel</string>
 </resources>

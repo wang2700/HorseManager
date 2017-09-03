@@ -43,7 +43,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.ChooseRepeat"
-            android:theme="@android:style/Theme.Holo.Dialog" />
+            android:theme="@style/Theme.AppCompat.Light.Dialog"
+            android:excludeFromRecents="true"
+            android:label="@string/choose_repeat"/>
     </application>
 
 </manifest>
