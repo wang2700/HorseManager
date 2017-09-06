@@ -1,6 +1,5 @@
 package jw.horsemanager.Activities;
 
-import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,18 +9,23 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
-import java.lang.reflect.Array;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
-import jw.horsemanager.Dialog.ChooseRepeatDialogFragment;
 import jw.horsemanager.Misc.Constants;
 import jw.horsemanager.Misc.SystemSetting;
+import jw.horsemanager.Objects.FeedingSchedule;
 import jw.horsemanager.R;
 
 public class AddEditFeedingSchedule extends AppCompatActivity {
@@ -35,6 +39,7 @@ public class AddEditFeedingSchedule extends AppCompatActivity {
     private EditText feedNameEditText, amountEditText;
     private boolean[] feedRepeat = new boolean[7];
     private boolean isFirstRepeat = true;
+    private Spinner unitSpinner, feedTypeSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,8 @@ public class AddEditFeedingSchedule extends AppCompatActivity {
         repeatBtn = (Button) findViewById(R.id.repeat_btn);
         feedNameEditText = (EditText) findViewById(R.id.feed_name_edit_text);
         amountEditText = (EditText) findViewById(R.id.amount_edit_text);
+        unitSpinner = (Spinner) findViewById(R.id.unit_spinner);
+        feedTypeSpinner = (Spinner) findViewById(R.id.feed_type_spinner);
 
         //time picker for feeding time
         feedingTimeBtn.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +116,6 @@ public class AddEditFeedingSchedule extends AppCompatActivity {
         });
 
         //chooses repeat type
-        final DialogFragment repeatDialog = new ChooseRepeatDialogFragment();
         repeatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,6 +125,34 @@ public class AddEditFeedingSchedule extends AppCompatActivity {
                 startActivityForResult(chooseRepeatIntent, Constants.REQUEST_CHOOSE_REPEAT);
             }
         });
+
+        //configure feed type spinner
+        ArrayAdapter<String> feedTypeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.feed_type));
+        feedTypeSpinner.setAdapter(feedTypeAdapter);
+        feedTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                switch (position) {
+                    case 1:
+                        unitSpinner.setAdapter(new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, view.getResources().getStringArray(R.array.unit_feed)));
+                        break;
+                    case 2:
+                        unitSpinner.setAdapter(new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, view.getResources().getStringArray(R.array.unit_hay)));
+                        break;
+                    case 3:
+                        unitSpinner.setAdapter(new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, view.getResources().getStringArray(R.array.unit_supplement)));
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        //configure unit spinner
+        unitSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.unit_feed)));
 
     }
 
@@ -140,6 +174,26 @@ public class AddEditFeedingSchedule extends AppCompatActivity {
               if any field is changed show dialog for confirm returning to previous screen
              */
             finish();
+        } else {
+            if (id == R.id.save_action_add_feeding_schedule) {
+                String feedName = feedNameEditText.getText().toString();
+                String feedType = (String) feedTypeSpinner.getSelectedItem();
+                double feedAmount = Double.parseDouble(amountEditText.getText().toString());
+                String unit = (String) unitSpinner.getSelectedItem();
+                FeedingSchedule newSchedule = new FeedingSchedule(feedName, feedRepeat, feedingHour, feedingMinute, feedAmount, unit, feedType);
+                HomeScreen.getFeedingScheduleList().add(newSchedule);
+                try {
+                    FileOutputStream scheduleListFos = new FileOutputStream(HomeScreen.getFeedingScheduleFilePath());
+                    ObjectOutputStream scheduleListOos = new ObjectOutputStream(scheduleListFos);
+                    scheduleListOos.writeObject(HomeScreen.getFeedingScheduleList());
+                    scheduleListOos.flush();
+                    scheduleListFos.close();
+                    scheduleListOos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                finish();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -147,7 +201,7 @@ public class AddEditFeedingSchedule extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.REQUEST_CHOOSE_REPEAT){
+        if (requestCode == Constants.REQUEST_CHOOSE_REPEAT) {
             if (resultCode == RESULT_OK) {
                 isFirstRepeat = false;
                 feedRepeat = Arrays.copyOf((boolean[]) data.getExtras().get("selection"), 7);
@@ -180,9 +234,9 @@ public class AddEditFeedingSchedule extends AppCompatActivity {
                     repeatText = repeatText + getString(R.string.sun_repeat) + " ";
                 }
                 repeatText = repeatText.substring(0, repeatText.length() - 2);
-                if (isEveryday(feedRepeat)){
+                if (isEveryday(feedRepeat)) {
                     repeatText = getString(R.string.repeat_everyday);
-                } else if (isNotRepeat(feedRepeat)){
+                } else if (isNotRepeat(feedRepeat)) {
                     repeatText = getString(R.string.not_repeat);
                 }
                 repeatBtn.setText(repeatText);
@@ -190,7 +244,7 @@ public class AddEditFeedingSchedule extends AppCompatActivity {
         }
     }
 
-    static boolean isEveryday(boolean[] choices){
+    static boolean isEveryday(boolean[] choices) {
         for (boolean choice : choices) {
             if (!choice)
                 return false;
@@ -198,7 +252,7 @@ public class AddEditFeedingSchedule extends AppCompatActivity {
         return true;
     }
 
-    static boolean isNotRepeat (boolean[] choices){
+    static boolean isNotRepeat(boolean[] choices) {
         for (boolean choice : choices) {
             if (choice)
                 return false;

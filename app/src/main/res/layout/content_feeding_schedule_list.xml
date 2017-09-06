@@ -8,10 +8,9 @@
     tools:context="jw.horsemanager.Activities.FeedingScheduleList"
     tools:showIn="@layout/activity_feeding_schedule_list">
 
-    <TextView
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="List"
-        android:textSize="50sp"/>
+        android:id="@+id/feeding_schedule_list_view"/>
 
 </LinearLayout>

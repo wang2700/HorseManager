@@ -9,7 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 
+import jw.horsemanager.Adapter.FeedingScheduleAdapter;
 import jw.horsemanager.Misc.Constants;
 import jw.horsemanager.Objects.FeedingSchedule;
 import jw.horsemanager.R;
@@ -25,6 +27,12 @@ public class FeedingScheduleList extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        if (HomeScreen.getFeedingScheduleList() != null) {
+            FeedingScheduleAdapter feedingScheduleAdapter = new FeedingScheduleAdapter(this, R.layout.list_feeding_schedule, HomeScreen.getFeedingScheduleList());
+            ListView listView = (ListView) findViewById(R.id.feeding_schedule_list_view);
+            listView.setAdapter(feedingScheduleAdapter);
+        }
     }
 
     @Override

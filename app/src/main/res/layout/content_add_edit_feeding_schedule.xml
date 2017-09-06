@@ -10,20 +10,40 @@
     tools:context="jw.horsemanager.Activities.AddEditFeedingSchedule"
     tools:showIn="@layout/activity_add_edit_feeding_schedule">
 
-    <LinearLayout
-        style="@style/edit_linear_layout"
-        android:orientation="horizontal">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp">
 
         <ImageView
-            style="@style/edit_icon"
+            android:id="@+id/icon_food_image_view"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:padding="8dp"
             android:src="@drawable/ic_food" />
+
+        <Spinner
+            android:id="@+id/feed_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/icon_food_image_view"
+            android:layout_alignTop="@id/icon_food_image_view"
+            android:layout_toEndOf="@id/icon_food_image_view"
+            android:entries="@array/feed_type" />
 
         <EditText
             android:id="@+id/feed_name_edit_text"
-            style="@style/edit_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/feed_type_spinner"
+            android:layout_below="@id/feed_type_spinner"
             android:hint="@string/feed_name" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <View style="@style/grey_separate_line" />
 
@@ -43,6 +63,7 @@
             android:layout_weight="5"
             android:text="@string/time"
             android:textAlignment="textStart"
+            android:textAllCaps="false"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -64,6 +85,7 @@
             android:layout_weight="5"
             android:text="@string/repeat_everyday"
             android:textAlignment="textStart"
+            android:textAllCaps="false"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -82,7 +104,7 @@
             android:id="@+id/amount_edit_text"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="6"
             android:hint="@string/amount_of_feed"
             android:inputType="numberDecimal" />
 
@@ -90,8 +112,8 @@
             android:id="@+id/unit_spinner"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:entries="@array/units_array" />
+            android:layout_weight="5"
+            android:entries="@array/unit_feed" />
 
     </LinearLayout>
 

@@ -20,13 +20,16 @@ import android.view.MenuItem;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import jw.horsemanager.Fragments.HomeFragment;
 import jw.horsemanager.Fragments.HorsesFragment;
 import jw.horsemanager.Misc.SystemSetting;
+import jw.horsemanager.Objects.FeedingSchedule;
 import jw.horsemanager.Objects.Horse;
 import jw.horsemanager.R;
 
@@ -38,6 +41,18 @@ public class HomeScreen extends AppCompatActivity
     private FragmentManager fragmentManager;
     private static ArrayList<Horse> horseArrayList;
     private static String horseListFilePath;
+
+    public static String getFeedingScheduleFilePath() {
+        return feedingScheduleFilePath;
+    }
+
+    private static String feedingScheduleFilePath;
+
+    public static ArrayList getFeedingScheduleList() {
+        return feedingScheduleList;
+    }
+
+    private static ArrayList feedingScheduleList;
 
     public static ArrayList<Horse> getHorseArrayList() {
         return horseArrayList;
@@ -85,6 +100,41 @@ public class HomeScreen extends AppCompatActivity
             try {
                 horseListFile.createNewFile();
                 horseArrayList = new ArrayList<>();
+                FileOutputStream fos = new FileOutputStream(horseListFile);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(horseArrayList);
+                oos.close();
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //load feeding schedule list
+        feedingScheduleFilePath = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString() + "/FeedingScheduleList";
+        Log.i(TAG,"checking feeding schedule list file from:" + feedingScheduleFilePath);
+        File feedingScheduleFile = new File(feedingScheduleFilePath);
+        if (feedingScheduleFile.exists()){
+            try{
+                Log.i(TAG, "Feeding Schedule list file exists");
+                FileInputStream feedingListFis = new FileInputStream(feedingScheduleFile);
+                ObjectInputStream feedingListOis = new ObjectInputStream(feedingListFis);
+                feedingScheduleList = (ArrayList) feedingListOis.readObject();
+                feedingListFis.close();
+                feedingListOis.close();
+            } catch (ClassNotFoundException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.i(TAG, "Feeding Schedule List file does not exists");
+            try {
+                feedingScheduleFile.createNewFile();
+                feedingScheduleList = new ArrayList<FeedingSchedule>();
+                FileOutputStream fos = new FileOutputStream(feedingScheduleFile);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(feedingScheduleList);
+                oos.close();
+                fos.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
