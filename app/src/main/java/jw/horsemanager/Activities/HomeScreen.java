@@ -52,7 +52,7 @@ public class HomeScreen extends AppCompatActivity
         return feedingScheduleList;
     }
 
-    private static ArrayList feedingScheduleList;
+    private static ArrayList<FeedingSchedule> feedingScheduleList;
 
     public static ArrayList<Horse> getHorseArrayList() {
         return horseArrayList;
@@ -111,33 +111,34 @@ public class HomeScreen extends AppCompatActivity
         }
 
         //load feeding schedule list
-        feedingScheduleFilePath = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString() + "/FeedingScheduleList";
+        feedingScheduleFilePath = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString() + "/FeedingList/";
         Log.i(TAG,"checking feeding schedule list file from:" + feedingScheduleFilePath);
-        File feedingScheduleFile = new File(feedingScheduleFilePath);
-        if (feedingScheduleFile.exists()){
-            try{
-                Log.i(TAG, "Feeding Schedule list file exists");
-                FileInputStream feedingListFis = new FileInputStream(feedingScheduleFile);
-                ObjectInputStream feedingListOis = new ObjectInputStream(feedingListFis);
-                feedingScheduleList = (ArrayList) feedingListOis.readObject();
-                feedingListFis.close();
-                feedingListOis.close();
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
+        File feedingScheduleDir = new File(feedingScheduleFilePath);
+        feedingScheduleList = new ArrayList<>();
+        if (feedingScheduleDir.exists()){
+            Log.i(TAG, "Feeding Schedule list file exists");
+            FileInputStream feedingFis = null;
+            ObjectInputStream feedingOis = null;
+            for (final File file : feedingScheduleDir.listFiles()) {
+                try{
+                    feedingFis = new FileInputStream(file);
+                    feedingOis = new ObjectInputStream(feedingFis);
+                    FeedingSchedule feedingSchedule = (FeedingSchedule)feedingOis.readObject();
+                    feedingScheduleList.add(feedingSchedule);
+                } catch (ClassNotFoundException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (feedingFis != null && feedingOis != null) {
+                try {
+                    feedingFis.close();
+                    feedingOis.close();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
             }
         } else {
-            Log.i(TAG, "Feeding Schedule List file does not exists");
-            try {
-                feedingScheduleFile.createNewFile();
-                feedingScheduleList = new ArrayList<FeedingSchedule>();
-                FileOutputStream fos = new FileOutputStream(feedingScheduleFile);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                oos.writeObject(feedingScheduleList);
-                oos.close();
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            feedingScheduleDir.mkdirs();
         }
 
         //check system setting

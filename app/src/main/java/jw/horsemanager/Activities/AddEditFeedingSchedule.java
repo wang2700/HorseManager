@@ -3,6 +3,7 @@ package jw.horsemanager.Activities;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,8 +15,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -40,6 +43,7 @@ public class AddEditFeedingSchedule extends AppCompatActivity {
     private boolean[] feedRepeat = new boolean[7];
     private boolean isFirstRepeat = true;
     private Spinner unitSpinner, feedTypeSpinner;
+    private TextInputLayout feedNameTIL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,7 @@ public class AddEditFeedingSchedule extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle extras = getIntent().getExtras();
-        int editMode = (int) extras.get("mode");
+        editMode = (int) extras.get("mode");
 
         if (editMode == Constants.ADD) {
             getSupportActionBar().setTitle(getString(R.string.new_text) + " " + getString(R.string.feeding_schedule));
@@ -68,6 +72,7 @@ public class AddEditFeedingSchedule extends AppCompatActivity {
         amountEditText = (EditText) findViewById(R.id.amount_edit_text);
         unitSpinner = (Spinner) findViewById(R.id.unit_spinner);
         feedTypeSpinner = (Spinner) findViewById(R.id.feed_type_spinner);
+        feedNameTIL = (TextInputLayout) findViewById(R.id.feed_name_text_input_layout);
 
         //time picker for feeding time
         feedingTimeBtn.setOnClickListener(new View.OnClickListener() {
@@ -175,24 +180,35 @@ public class AddEditFeedingSchedule extends AppCompatActivity {
              */
             finish();
         } else {
+
             if (id == R.id.save_action_add_feeding_schedule) {
-                String feedName = feedNameEditText.getText().toString();
-                String feedType = (String) feedTypeSpinner.getSelectedItem();
-                double feedAmount = Double.parseDouble(amountEditText.getText().toString());
-                String unit = (String) unitSpinner.getSelectedItem();
-                FeedingSchedule newSchedule = new FeedingSchedule(feedName, feedRepeat, feedingHour, feedingMinute, feedAmount, unit, feedType);
-                HomeScreen.getFeedingScheduleList().add(newSchedule);
-                try {
-                    FileOutputStream scheduleListFos = new FileOutputStream(HomeScreen.getFeedingScheduleFilePath());
-                    ObjectOutputStream scheduleListOos = new ObjectOutputStream(scheduleListFos);
-                    scheduleListOos.writeObject(HomeScreen.getFeedingScheduleList());
-                    scheduleListOos.flush();
-                    scheduleListFos.close();
-                    scheduleListOos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (!isFieldValid())
+                    return super.onOptionsItemSelected(item);
+                if (editMode == Constants.ADD) {
+                    String feedName = feedNameEditText.getText().toString();
+                    String feedType = (String) feedTypeSpinner.getSelectedItem();
+                    double feedAmount = Double.parseDouble(amountEditText.getText().toString());
+                    String unit = (String) unitSpinner.getSelectedItem();
+                    FeedingSchedule newSchedule = new FeedingSchedule(feedName, feedRepeat, feedingHour, feedingMinute, feedAmount, unit, feedType);
+                    File newFile = new File(HomeScreen.getFeedingScheduleFilePath()+"/"+newSchedule.getFileName());
+                    try {
+                        if (newFile.exists()){
+                            newSchedule.setFileName(newSchedule.getFileName() + "1");
+                            newFile = new File(HomeScreen.getFeedingScheduleFilePath()+"/"+newSchedule.getFileName());
+                        }
+                        newFile.createNewFile();
+                        FileOutputStream scheduleFos = new FileOutputStream(newFile);
+                        ObjectOutputStream scheduleOos = new ObjectOutputStream(scheduleFos);
+                        scheduleOos.writeObject(newSchedule);
+                        scheduleOos.flush();
+                        scheduleFos.close();
+                        scheduleOos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    HomeScreen.getFeedingScheduleList().add(newSchedule);
+                    finish();
                 }
-                finish();
             }
         }
         return super.onOptionsItemSelected(item);
@@ -258,5 +274,45 @@ public class AddEditFeedingSchedule extends AppCompatActivity {
                 return false;
         }
         return true;
+    }
+
+    /**
+     * this method will check each field to make sure it is properly filled out
+     * @return true if all fields are okay
+     */
+    public boolean isFieldValid(){
+        //check feed name and type
+        boolean status = true;
+        String feedType = (String) feedTypeSpinner.getSelectedItem();
+        String[] feedTypeArr = getResources().getStringArray(R.array.feed_type);
+        String feedName = feedNameEditText.getText().toString().trim();
+        if (feedType.equals(feedTypeArr[0]) ||
+                feedName.isEmpty() ||
+                feedName.length() == 0 ||
+                feedName.equals("")){
+            feedNameTIL.setErrorEnabled(true);
+            feedNameTIL.setError(getString(R.string.required_field));
+            status = false;
+        }
+
+        //check for time
+        TextView textView = (TextView) findViewById(R.id.time_error);
+        if (feedingTimeBtn.getText().equals(getString(R.string.time))){
+            textView.setVisibility(TextView.VISIBLE);
+        } else {
+            textView.setVisibility(TextView.GONE);
+        }
+
+        //check for amount
+        TextInputLayout amountTIL = (TextInputLayout) findViewById(R.id.amount_TIL);
+        String amount = (String) amountEditText.getText().toString().trim();
+        if (amount.isEmpty() ||
+                amount.length() == 0 ||
+                amount.equals("")){
+            amountTIL.setErrorEnabled(true);
+            amountTIL.setError(getString(R.string.required_field));
+        }
+
+        return  status;
     }
 }

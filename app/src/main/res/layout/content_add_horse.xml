@@ -80,12 +80,11 @@
                 android:src="@drawable/ic_food" />
 
             <Button
-                android:id="@+id/choose_btn_add_horse"
+                android:id="@+id/choose_feeding_btn_add_horse"
                 style="@android:style/Widget.Material.Light.Button.Borderless"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
-                android:onClick="chooseFeedingSchedule"
                 android:text="@string/choose_a_feeding_schedule"
                 android:textAlignment="textStart"
                 android:textAllCaps="false"

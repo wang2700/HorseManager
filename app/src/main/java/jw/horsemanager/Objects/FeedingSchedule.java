@@ -19,6 +19,8 @@ public class FeedingSchedule implements Serializable{
     private int timeMinute;
     private double amount; // amount of feed
     private String unit;
+    private String fileName;
+
 
     public FeedingSchedule(String feedName, boolean[] repeatWeekday, int timeHour, int timeMinute, double amount, String unit, String feedType) {
         this.feedName = feedName;
@@ -29,7 +31,17 @@ public class FeedingSchedule implements Serializable{
         this.unit = unit;
         this.feedType = feedType;
 
+        this.fileName = feedName + "_" + Integer.toString(timeHour) + "_" + Integer.toString(timeMinute);
     }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
 
     public String getFeedType() {
         return feedType;
@@ -145,5 +157,10 @@ public class FeedingSchedule implements Serializable{
                 return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return feedName + "\n" + getRepeatString() + "\n" + getAmountString();
     }
 }

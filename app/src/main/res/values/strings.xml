@@ -24,7 +24,7 @@
     <string name="feeding_schedule">Feeding Schedule</string>
     <string name="new_text">New</string>
     <string name="edit">Edit</string>
-    <string name="amount_of_feed">Amount of Feed</string>
+    <string name="amount">Amount</string>
     <string name="repeat_everyday">Repeat Everyday</string>
     <string name="choose_repeat">Choose Feeding Repetition</string>
     <string name="mon_repeat">Mon,</string>
@@ -45,4 +45,5 @@
     <string name="repeat">Repeat</string>
     <string name="okay">Okay</string>
     <string name="cancel">Cancel</string>
+    <string name="required_field">*Required Field</string>
 </resources>

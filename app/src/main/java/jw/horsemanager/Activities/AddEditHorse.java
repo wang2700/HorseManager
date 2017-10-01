@@ -28,6 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import jw.horsemanager.Misc.Constants;
+import jw.horsemanager.Objects.FeedingSchedule;
 import jw.horsemanager.Objects.Horse;
 import jw.horsemanager.Objects.SerializedBitmap;
 import jw.horsemanager.R;
@@ -37,13 +38,14 @@ public class AddEditHorse extends AppCompatActivity {
     private static final String TAG = "Add/EDit Horse";
 
     private EditText nameEditText, breedEditText;
-    private Button birthdayBtn;
+    private Button birthdayBtn, chooseFeeingSchedule;
     private ImageView horsePicImageView;
     private Calendar calendar;
     private Date birthday;
     private String mCurrentPhotoPath;
     private int editMode;
     private Bitmap horsePic;
+    private FeedingSchedule feedingSchedule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class AddEditHorse extends AppCompatActivity {
         breedEditText = (EditText) findViewById(R.id.breed_edit_text_add_horse);
         birthdayBtn = (Button) findViewById(R.id.birthday_btn_add_horse);
         horsePicImageView = (ImageView) findViewById(R.id.horse_pic_image_view_add_horse);
+        chooseFeeingSchedule = (Button) findViewById(R.id.choose_feeding_btn_add_horse);
 
         //get current date and assign to the button
         DateFormat currentDate = DateFormat.getDateInstance();
@@ -107,6 +110,16 @@ public class AddEditHorse extends AppCompatActivity {
                 dispatchTakePictureIntent();
             }
         });
+
+        //when choose feeding schedule button is pressed
+        chooseFeeingSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "Start Feeding Schedule List Activity");
+                Intent chooseSchedule = new Intent(AddEditHorse.this, FeedingScheduleList.class);
+                startActivityForResult(chooseSchedule,Constants.REQUEST_FEED_SCHEDULE);
+            }
+        });
     }
 
     @Override
@@ -115,6 +128,10 @@ public class AddEditHorse extends AppCompatActivity {
             Bundle extras = data.getExtras();
             horsePic = (Bitmap) extras.get("data");
             horsePicImageView.setImageBitmap(horsePic);
+        } else if (requestCode == Constants.REQUEST_FEED_SCHEDULE && resultCode == RESULT_OK){
+            Bundle extras = data.getExtras();
+            feedingSchedule = (FeedingSchedule) HomeScreen.getFeedingScheduleList().get((int) extras.get("index"));
+            chooseFeeingSchedule.setText(feedingSchedule.toString());
         }
     }
 
@@ -198,16 +215,6 @@ public class AddEditHorse extends AppCompatActivity {
         startActivityForResult(takePictureIntent, Constants.REQUEST_IMAGE_CAPTURE);
 //            }
 //        }
-    }
-
-    /**
-     * this method starts the intent to choose a feeding scheule
-     * @param view the button view
-     */
-    public void chooseFeedingSchedule(View view) {
-        Log.i(TAG, "Start Feeding Schedule List Activity");
-        Intent chooseSchedule = new Intent(AddEditHorse.this, FeedingScheduleList.class);
-        startActivityForResult(chooseSchedule,Constants.REQUEST_FEED_SCHEDULE);
     }
 
 //    private File createImageFile() throws IOException {
