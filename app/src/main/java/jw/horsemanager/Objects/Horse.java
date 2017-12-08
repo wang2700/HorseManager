@@ -15,7 +15,7 @@ public class Horse implements Serializable{
     private SerializedBitmap picture;
     private Date birthday;
     private String Breed;
-    //private FeedingSchedule
+    private FeedingSchedule[] feedingSchedules;
     //private ArrayList<String> docPath;
 
     public Horse(String name, SerializedBitmap picture, Date birthday, String breed, ArrayList<String> docPath) {

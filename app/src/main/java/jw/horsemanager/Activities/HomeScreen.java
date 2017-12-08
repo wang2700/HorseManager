@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -19,12 +20,16 @@ import android.view.MenuItem;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import jw.horsemanager.Fragments.HomeFragment;
 import jw.horsemanager.Fragments.HorsesFragment;
+import jw.horsemanager.Misc.SystemSetting;
+import jw.horsemanager.Objects.FeedingSchedule;
 import jw.horsemanager.Objects.Horse;
 import jw.horsemanager.R;
 
@@ -34,8 +39,28 @@ public class HomeScreen extends AppCompatActivity
     private static final String TAG = "HomeScreen";
 
     private FragmentManager fragmentManager;
-    public static ArrayList<Horse> horseArrayList;
-    public static String horseListFilePath;
+    private static ArrayList<Horse> horseArrayList;
+    private static String horseListFilePath;
+
+    public static String getFeedingScheduleFilePath() {
+        return feedingScheduleFilePath;
+    }
+
+    private static String feedingScheduleFilePath;
+
+    public static ArrayList getFeedingScheduleList() {
+        return feedingScheduleList;
+    }
+
+    private static ArrayList<FeedingSchedule> feedingScheduleList;
+
+    public static ArrayList<Horse> getHorseArrayList() {
+        return horseArrayList;
+    }
+
+    public static String getHorseListFilePath() {
+        return horseListFilePath;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +100,51 @@ public class HomeScreen extends AppCompatActivity
             try {
                 horseListFile.createNewFile();
                 horseArrayList = new ArrayList<>();
+                FileOutputStream fos = new FileOutputStream(horseListFile);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(horseArrayList);
+                oos.close();
+                fos.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
+        //load feeding schedule list
+        feedingScheduleFilePath = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString() + "/FeedingList/";
+        Log.i(TAG,"checking feeding schedule list file from:" + feedingScheduleFilePath);
+        File feedingScheduleDir = new File(feedingScheduleFilePath);
+        feedingScheduleList = new ArrayList<>();
+        if (feedingScheduleDir.exists()){
+            Log.i(TAG, "Feeding Schedule list file exists");
+            FileInputStream feedingFis = null;
+            ObjectInputStream feedingOis = null;
+            for (final File file : feedingScheduleDir.listFiles()) {
+                try{
+                    feedingFis = new FileInputStream(file);
+                    feedingOis = new ObjectInputStream(feedingFis);
+                    FeedingSchedule feedingSchedule = (FeedingSchedule)feedingOis.readObject();
+                    feedingScheduleList.add(feedingSchedule);
+                } catch (ClassNotFoundException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (feedingFis != null && feedingOis != null) {
+                try {
+                    feedingFis.close();
+                    feedingOis.close();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            feedingScheduleDir.mkdirs();
+        }
 
+        //check system setting
+        SystemSetting.setIs24HourFormat(DateFormat.is24HourFormat(getApplicationContext()));
+        SystemSetting.setDateFormat(DateFormat.getDateFormat(getApplicationContext()));
+        SystemSetting.setTimeFormat(DateFormat.getTimeFormat(getApplicationContext()));
 
     }
 

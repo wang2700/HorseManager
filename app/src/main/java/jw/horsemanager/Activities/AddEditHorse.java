@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +19,6 @@ import android.widget.ImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
@@ -27,24 +27,25 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import jw.horsemanager.Misc.Constants;
+import jw.horsemanager.Objects.FeedingSchedule;
 import jw.horsemanager.Objects.Horse;
 import jw.horsemanager.Objects.SerializedBitmap;
 import jw.horsemanager.R;
 
-public class AddHorse extends AppCompatActivity {
+public class AddEditHorse extends AppCompatActivity {
 
-    public static final int EDIT = 1;
-    public static final int ADD = 2;
+    private static final String TAG = "Add/EDit Horse";
 
     private EditText nameEditText, breedEditText;
-    private Button birthdayBtn;
+    private Button birthdayBtn, chooseFeeingSchedule;
     private ImageView horsePicImageView;
     private Calendar calendar;
     private Date birthday;
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private String mCurrentPhotoPath;
     private int editMode;
     private Bitmap horsePic;
+    private FeedingSchedule feedingSchedule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class AddHorse extends AppCompatActivity {
         breedEditText = (EditText) findViewById(R.id.breed_edit_text_add_horse);
         birthdayBtn = (Button) findViewById(R.id.birthday_btn_add_horse);
         horsePicImageView = (ImageView) findViewById(R.id.horse_pic_image_view_add_horse);
+        chooseFeeingSchedule = (Button) findViewById(R.id.choose_feeding_btn_add_horse);
 
         //get current date and assign to the button
         DateFormat currentDate = DateFormat.getDateInstance();
@@ -95,7 +97,7 @@ public class AddHorse extends AppCompatActivity {
         birthdayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(AddHorse.this, dateSetListener,
+                new DatePickerDialog(AddEditHorse.this, dateSetListener,
                         calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -108,14 +110,28 @@ public class AddHorse extends AppCompatActivity {
                 dispatchTakePictureIntent();
             }
         });
+
+        //when choose feeding schedule button is pressed
+        chooseFeeingSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "Start Feeding Schedule List Activity");
+                Intent chooseSchedule = new Intent(AddEditHorse.this, FeedingScheduleList.class);
+                startActivityForResult(chooseSchedule,Constants.REQUEST_FEED_SCHEDULE);
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == Constants.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             horsePic = (Bitmap) extras.get("data");
             horsePicImageView.setImageBitmap(horsePic);
+        } else if (requestCode == Constants.REQUEST_FEED_SCHEDULE && resultCode == RESULT_OK){
+            Bundle extras = data.getExtras();
+            feedingSchedule = (FeedingSchedule) HomeScreen.getFeedingScheduleList().get((int) extras.get("index"));
+            chooseFeeingSchedule.setText(feedingSchedule.toString());
         }
     }
 
@@ -131,7 +147,7 @@ public class AddHorse extends AppCompatActivity {
 
         //when save button is pressed
         if (id == R.id.save_action_add_horse) {
-            if (editMode == ADD) {
+            if (editMode == Constants.ADD) {
                 String name = String.valueOf(nameEditText.getText());
                 String breed = String.valueOf(breedEditText.getText());
                 SerializedBitmap horsePicSerialized = new SerializedBitmap();
@@ -139,14 +155,14 @@ public class AddHorse extends AppCompatActivity {
                 horsePic.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 horsePicSerialized.bitmapImage = stream.toByteArray();
                 Horse newHorse = new Horse(name, horsePicSerialized, birthday, breed, null);
-                HomeScreen.horseArrayList.add(newHorse);
+                HomeScreen.getHorseArrayList().add(newHorse);
                 try {
-                    FileOutputStream horseListFos = new FileOutputStream(HomeScreen.horseListFilePath);
+                    FileOutputStream horseListFos = new FileOutputStream(HomeScreen.getHorseListFilePath());
                     ObjectOutputStream horseListOos = new ObjectOutputStream(horseListFos);
                     final long initialPosition = horseListFos.getChannel().position();
                     horseListFos.getChannel().position(initialPosition);
                     horseListOos.reset();
-                    horseListOos.writeObject(HomeScreen.horseArrayList);
+                    horseListOos.writeObject(HomeScreen.getHorseArrayList());
                     horseListOos.flush();
                     horseListFos.close();
                     stream.close();
@@ -154,7 +170,7 @@ public class AddHorse extends AppCompatActivity {
                 } catch (IOException e){
                     e.printStackTrace();
                 }
-            } else if (editMode == EDIT) {
+            } else if (editMode == Constants.EDIT) {
                 // TODO: add actions when the user is edit the horse profile
             }
             finish();
@@ -196,7 +212,7 @@ public class AddHorse extends AppCompatActivity {
 //            if (photoFile != null){
 //                Uri photoURI = FileProvider.getUriForFile(this, "com.example.android.fileprovider", photoFile);
 //                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        startActivityForResult(takePictureIntent, Constants.REQUEST_IMAGE_CAPTURE);
 //            }
 //        }
     }

@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import jw.horsemanager.Activities.AddHorse;
+import jw.horsemanager.Activities.AddEditHorse;
+import jw.horsemanager.Misc.Constants;
 import jw.horsemanager.R;
 
 /**
@@ -47,8 +46,8 @@ public class HorsesFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.add_horse_menu_item){
-            Intent addHorseIntent = new Intent(getContext(), AddHorse.class);
-            addHorseIntent.putExtra("mode", AddHorse.ADD);
+            Intent addHorseIntent = new Intent(getContext(), AddEditHorse.class);
+            addHorseIntent.putExtra("mode", Constants.ADD);
             startActivity(addHorseIntent);
             Log.i(TAG, "Start Activity: Add Horse");
         }

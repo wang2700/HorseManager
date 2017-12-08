@@ -17,4 +17,54 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- style for linear layout of each field to edit -->
+    <style name="edit_linear_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+    <!-- style for the divider between each section of display -->
+    <style name="grey_separate_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@android:color/darker_gray</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <!-- style for icon at each row of field -->
+    <style name="edit_icon">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:layout_alignParentStart">true</item>
+    </style>
+
+    <!-- style for each field in edit mode -->
+    <style name="edit_field">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="edit_button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">5</item>
+        <item name="android:textAlignment">textStart</item>
+    </style>
+
+    <!-- style for check box in the choose repeat dialog -->
+    <style name="checkbox_choose_repeat_dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+
 </resources>

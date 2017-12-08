@@ -2,14 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jw.horsemanager">
 
-    <uses-feature android:name="android.hardware.camera2"
-        android:required="true"/>
+    <uses-sdk android:maxSdkVersion="26" />
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18"/>
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
 
-    <uses-sdk
-        android:maxSdkVersion="26"/>
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
     <application
         android:allowBackup="true"
@@ -29,11 +30,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.AddHorse"
+            android:name=".Activities.AddEditHorse"
             android:label="@string/title_activity_add_horse"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.AddEditFeedingSchedule"
+            android:label="@string/title_activity_add_edit_feeding_schedule"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.FeedingScheduleList"
+            android:label="@string/title_activity_feeding_schedule_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.ChooseRepeat"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"
+            android:excludeFromRecents="true"
+            android:label="@string/choose_repeat"/>
     </application>
-
-
 
 </manifest>

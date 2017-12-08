@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="unit_supplement">
+        <item>oz</item>
+        <item>lb</item>
+    </string-array>
+
+    <string-array name="repetition_choice">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+        <item>Does Not Repeat</item>
+    </string-array>
+
+    <string-array name="feed_type">
+        <item>Choose a Feed Type</item>
+        <item>Feed</item>
+        <item>Hay</item>
+        <item>Supplement</item>
+    </string-array>
+
+    <string-array name="unit_feed">
+        <item>oz</item>
+        <item>lb</item>
+        <item>qt</item>
+    </string-array>
+
+    <string-array name="unit_hay">
+        <item>flakes</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="jw.horsemanager.Activities.AddEditFeedingSchedule"
+    tools:showIn="@layout/activity_add_edit_feeding_schedule">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/icon_food_image_view"
+            style="@style/edit_icon"
+            android:src="@drawable/ic_food" />
+
+        <Spinner
+            android:id="@+id/feed_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/icon_food_image_view"
+            android:layout_alignTop="@id/icon_food_image_view"
+            android:layout_toEndOf="@id/icon_food_image_view"
+            android:entries="@array/feed_type" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/feed_name_text_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/feed_type_spinner"
+            android:layout_below="@id/feed_type_spinner"
+            android:hint="@string/feed_name">
+
+            <EditText
+                android:id="@+id/feed_name_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+
+
+    </RelativeLayout>
+
+    <View style="@style/grey_separate_line"
+        android:layout_marginBottom="8dp"/>
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <ImageView
+            style="@style/edit_icon"
+            android:src="@drawable/ic_time"
+            android:id="@+id/time_icon"/>
+
+        <Button
+            android:id="@+id/feed_time_btn"
+            style="@android:style/Widget.Material.Light.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/time_icon"
+            android:layout_alignTop="@id/time_icon"
+            android:layout_alignBottom="@id/time_icon"
+            android:text="@string/time"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/feed_time_btn"
+            android:layout_below="@id/feed_time_btn"
+            android:layout_marginStart="4dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="12sp"
+            android:text="@string/required_field"
+            android:visibility="gone"
+            android:id="@+id/time_error"/>
+    </RelativeLayout>
+
+    <View style="@style/grey_separate_line"
+        android:layout_marginTop="8dp"/>
+
+    <LinearLayout
+        style="@style/edit_linear_layout"
+        android:orientation="horizontal">
+
+        <ImageView
+            style="@style/edit_icon"
+            android:src="@drawable/ic_repeat" />
+
+        <Button
+            android:id="@+id/repeat_btn"
+            style="@android:style/Widget.Material.Light.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="@string/repeat_everyday"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <View style="@style/grey_separate_line" />
+
+    <LinearLayout
+        style="@style/edit_linear_layout"
+        android:orientation="horizontal">
+
+        <ImageView
+            style="@style/edit_icon"
+            android:src="@drawable/ic_amount"
+            android:layout_marginTop="4dp"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:hint="@string/amount"
+            android:id="@+id/amount_TIL">
+
+            <EditText
+                android:id="@+id/amount_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="numberDecimal" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <Spinner
+            android:id="@+id/unit_spinner"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:entries="@array/unit_feed" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
